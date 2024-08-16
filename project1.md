@@ -17,4 +17,16 @@
 
 ### Create and Assign an Elastic IP
 
+- Select **Elastic IPs** under **Network & Security**
+
 ### Install Nginx
+- Execute the following commands.
+
+`sudo apt update`
+
+`sudo apt upgrade`
+
+`sudo apt install nginx`
+
+- Start your Nginx server by running the **`sudo systemctl start nginx`** command, enable it to start on boot by executing **`sudo systemctl enable nginx`**, and then confirm if it's running with the **`sudo systemctl status nginx`** command.
+![5](img/5.png)
