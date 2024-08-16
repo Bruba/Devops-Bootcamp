@@ -42,11 +42,11 @@ To make your website accessible via your domain name rather than the IP address,
 
 - Go back to your AWS console, search for **Route 53①**, and then choose **Route 53②** from the list of services shown.
 
-- Select **Create hosted zones①** and click on **Get started②**.
+- Select **Create hosted zones** and click on **Get started**.
 
-- Enter your **Domain name①**, choose **Public hosted zone②** and then click on **Create hosted zone③**.
+- Enter your **Domain name**, choose **Public hosted zone** and then click on **Create hosted zone**.
 
-- Select the **created hosted zone①** and copy the assigned **Values②**.
+- Select the **created hosted zone** and copy the assigned **Values**.
 
 - Go back to your domain registrar and select **Custom DNS** within the **NAMESERVERS** section.
 
