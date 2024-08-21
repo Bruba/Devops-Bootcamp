@@ -17,3 +17,7 @@ Please reference [**Project1**](https://github.com/StrangeJay/devops-beginner-bo
 `sudo apt upgrade`
 
 `sudo apt install nginx`
+
+- Start your Nginx server by running the `sudo systemctl start nginx` command, enable it to start on boot by executing `sudo systemctl enable nginx`, and then confirm if it's running with the `sudo systemctl status nginx` command.
+
+![1](img/1.png)
