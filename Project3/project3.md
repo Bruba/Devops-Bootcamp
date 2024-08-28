@@ -54,18 +54,13 @@ Please reference [**Project1**](https://github.com/StrangeJay/devops-beginner-bo
 
 - Spin up your 3 ubuntu servers. Ensure you clearly name them so you don't make mistakes.
 
-![1]()
+![1](img/1.PNG)
 
 ### Install Nginx and Setup Your Website
 
 > [!NOTE]
 
 - Install Nginx on both web server terminals. These are the terminals you're using to manage the servers hosting the two distinct website contents that the load balancer will distribute traffic to.
-
-- Visit your instances IP address in a web browser to view the default Nginx startup page.
-
-- Execute `sudo apt install unzip` to install the unzip tool and run the following command to download and unzip your website files `sudo curl -o /var/www/html/2135_mini_finance.zip https://www.tooplate.com/zip-templates/2135_mini_finance.zip && sudo unzip -d /var/www/html/ /var/www/html/2135_mini_finance.zip && sudo rm -f /var/www/html/2135_mini_finance.zip`.
-
 
 - To install Nginx, execute the following commands on your terminal.
 
@@ -76,3 +71,10 @@ Please reference [**Project1**](https://github.com/StrangeJay/devops-beginner-bo
 `sudo apt install nginx`
 
 - Start your Nginx server by running the `sudo systemctl start nginx` command, enable it to start on boot by executing `sudo systemctl enable nginx`, and then confirm if it's running with the `sudo systemctl status nginx` command.
+![2](img/2.PNG)
+- Visit your instances IP address in a web browser to view the default Nginx startup page.
+![3](img/3.PNG) ![4](img/4.png)
+
+- Execute `sudo apt install unzip` to install the unzip tool and run the following command to download and unzip your website files `sudo curl -o /var/www/html/2135_mini_finance.zip https://www.tooplate.com/zip-templates/2135_mini_finance.zip && sudo unzip -d /var/www/html/ /var/www/html/2135_mini_finance.zip && sudo rm -f /var/www/html/2135_mini_finance.zip`.
+
+
