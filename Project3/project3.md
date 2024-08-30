@@ -113,3 +113,88 @@ server {
 
 > [!NOTE]
 To better identify the impact of your changes, connect to the second server in a new terminal window. There, update the website content with something different. When you reload your website, the load balancer will distribute traffic, potentially sending you to the updated version on the second server. This will make the differences between the two versions clearer.
+
+> [!NOTE]
+On your first server, run `sudo rm /etc/nginx/sites-enabled/default`, and on your second server, run `sudo rm /etc/nginx/sites-enabled/default`. This will delete the default site-enabled folders and enable Nginx to serve content from your specified website directories. If you don't delete these default folders, you'll continue to see the default Nginx page.
+
+![rm](img/rm-sites-enabled-default.png)
+
+- Run the `sudo systemctl restart nginx` command to restart your server.
+
+- Check both IP addresses to confirm your website is up and running.
+![9](img/9.png) ![10](img/10.png)
+
+### Configure your Load balancer
+
+- Install Nginx on the server you want to use as a load balancer, and execute `sudo systemctl status nginx` to ensure it's running.
+
+
+- Execute `sudo nano /etc/nginx/nginx.conf` to edit your Nginx configuration file.
+
+- Add the following within the http block.
+
+```
+
+    upstream bruba {
+    server 1;
+    server 2;
+    # Add more servers as needed
+}
+
+server {
+    listen 80;
+    server_name bruba.eu www.bruba.eu;
+
+    location / {
+        proxy_pass http://bruba;
+    }
+}
+
+```
+![11](img/11.png)
+
+> [!NOTE]
+Replace the necessary placeholders as shown in the picture above. Substitute `<server 1>` and `<server 2>` with the actual private IP addresses of your servers. Also, replace `<your domain> www.<your domain>` with your root domain and subdomain name, and update proxy_pass and the other relevant fields accordingly.
+
+- Run `sudo nginx -t` to check for syntax error.
+
+- Apply the changes by restarting Nginx:
+`sudo systemctl restart nginx`
+
+---
+
+### Create An A Record
+To make your website accessible via your domain name rather than the IP address, you'll need to set up a DNS record. I did this by buying my domain from Porkbun and then moving hosting to AWS Route 53, where I set up an A record.
+
+> [!NOTE]
+Visit [Project1](https://github.com/StrangeJay/devops-beginner-bootcamp/blob/main/project1/project1.md) for instructions on how to create a hosted zone.
+
+- Point your domain's A records to the IP address of your Nginx load balancer server.
+
+- In route 53, select the domain name and click on **Create record**.
+
+![12](img/12.png)
+
+- Click on **create record** again, to create the record for your sub domain.
+
+- Paste your IP address➀, input the Record name(**www➁**) and then click on **Create records**➂.
+
+- Go to the terminal you used in setting your first website and run `sudo nano /etc/nginx/sites-available/health` to edit your settings. Enter the name of your domain and then save your settings.
+![13](img/13.png)
+
+- Restart your nginx server by running the `sudo systemctl restart nginx` command.
+
+- Go to the terminal you used in setting your second website and run `sudo nano /etc/nginx/sites-available/interior` to edit your settings. Enter the name of your domain and then save your settings.
+
+![14](img/14.png)
+
+- Restart your nginx server by running the `sudo systemctl restart nginx` command.
+
+- Go to your domain name in a web browser to verify that your website is accessible.
+
+img
+
+- Reload the webpage to ensure the load balancer distributes traffic evenly between your servers.
+
+
+![recording1](img/recording1.mp4)
