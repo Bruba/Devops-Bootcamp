@@ -72,9 +72,44 @@ Please reference [**Project1**](https://github.com/StrangeJay/devops-beginner-bo
 
 - Start your Nginx server by running the `sudo systemctl start nginx` command, enable it to start on boot by executing `sudo systemctl enable nginx`, and then confirm if it's running with the `sudo systemctl status nginx` command.
 ![2](img/2.PNG)
-- Visit your instances IP address in a web browser to view the default Nginx startup page.
+- Visit your instances IP address in a web browser to view the default Nginx startup page for 2 servers.
 ![3](img/3.PNG) ![4](img/4.png)
 
 - Execute `sudo apt install unzip` to install the unzip tool and run the following command to download and unzip your website files `sudo curl -o /var/www/html/2135_mini_finance.zip https://www.tooplate.com/zip-templates/2135_mini_finance.zip && sudo unzip -d /var/www/html/ /var/www/html/2135_mini_finance.zip && sudo rm -f /var/www/html/2135_mini_finance.zip`.
 
+![5](img/5.png)
 
+- To set up your website's configuration, start by creating a new file in the Nginx sites-available directory. Use the following command to open a blank file in a text editor: `sudo nano /etc/nginx/sites-available/health`.
+
+- Copy and paste the following code into the open text editor.
+
+```
+server {
+    listen 80;
+    server_name example.com www.example.com;
+
+    root /var/www/html/2098_health;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+```
+
+- Edit the `root` directive within your server block to point to the directory where your downloaded website content is stored.
+![6](img/6.png)
+
+- Create a symbolic link for both websites by running the following command.
+`sudo ln -s /etc/nginx/sites-available/health /etc/nginx/sites-enabled/`
+
+![7](img/7.png)
+
+- Run the `sudo nginx -t` command to check the syntax of the Nginx configuration file, and when successful run the `sudo systemctl restart nginx` command.
+
+![8](img/8.png)
+
+- Repeat the process for the second website.
+
+> [!NOTE]
+To better identify the impact of your changes, connect to the second server in a new terminal window. There, update the website content with something different. When you reload your website, the load balancer will distribute traffic, potentially sending you to the updated version on the second server. This will make the differences between the two versions clearer.
