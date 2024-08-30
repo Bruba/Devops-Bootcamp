@@ -214,5 +214,7 @@ Visit [Project1](https://github.com/StrangeJay/devops-beginner-bootcamp/blob/mai
 ![16](img/16.png)
 
 - Access your website to verify that Certbot has successfully enabled HTTPS.
-![18](img/18.png)
+
+![18](img/18.png) ![19](img/19.png) 
+
 ![recording2-ezgif.com-optimize.gif](img/recording2-ezgif.com-optimize.gif)
