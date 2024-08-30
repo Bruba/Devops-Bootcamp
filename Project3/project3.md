@@ -196,5 +196,19 @@ img
 
 - Reload the webpage to ensure the load balancer distributes traffic evenly between your servers.
 
-
 ![recording1-ezgif.com-optimize.gif](img/recording1-ezgif.com-optimize.gif)
+
+### Install certbot and Request For an SSL/TLS Certificate
+
+- Install certbot by executing the following commands:
+`sudo apt update`
+`sudo apt install python3-certbot-nginx`
+
+- Execute the `sudo certbot --nginx` command to request your certificate. Follow the instructions provided by certbot and select the domain name for which you would like to activate HTTPS.
+
+- You should get a congratulatory message that says https has been successfully enabled.
+
+![16](img/16.png)
+
+- Access your website to verify that Certbot has successfully enabled HTTPS.
+![recording2-ezgif.com-optimize.gif](img/recording2-ezgif.com-optimize.gif)
