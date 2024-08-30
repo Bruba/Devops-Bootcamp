@@ -177,14 +177,17 @@ Visit [Project1](https://github.com/StrangeJay/devops-beginner-bootcamp/blob/mai
 
 - Click on **create record** again, to create the record for your sub domain.
 
-- Paste your IP address➀, input the Record name(**www➁**) and then click on **Create records**➂.
+- Paste your IP address, input the Record name(**www**) and then click on **Create records**.
+
+![17](img/17.png)
 
 - Go to the terminal you used in setting your first website and run `sudo nano /etc/nginx/sites-available/health` to edit your settings. Enter the name of your domain and then save your settings.
+
 ![13](img/13.png)
 
 - Restart your nginx server by running the `sudo systemctl restart nginx` command.
 
-- Go to the terminal you used in setting your second website and run `sudo nano /etc/nginx/sites-available/interior` to edit your settings. Enter the name of your domain and then save your settings.
+- Go to the terminal you used in setting your second website and run `sudo nano /etc/nginx/sites-available/bashboard` to edit your settings. Enter the name of your domain and then save your settings.
 
 ![14](img/14.png)
 
@@ -192,7 +195,7 @@ Visit [Project1](https://github.com/StrangeJay/devops-beginner-bootcamp/blob/mai
 
 - Go to your domain name in a web browser to verify that your website is accessible.
 
-img
+![15](img/15.png)
 
 - Reload the webpage to ensure the load balancer distributes traffic evenly between your servers.
 
@@ -211,4 +214,5 @@ img
 ![16](img/16.png)
 
 - Access your website to verify that Certbot has successfully enabled HTTPS.
+![18](img/18.png)
 ![recording2-ezgif.com-optimize.gif](img/recording2-ezgif.com-optimize.gif)
