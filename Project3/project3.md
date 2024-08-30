@@ -218,3 +218,8 @@ Visit [Project1](https://github.com/StrangeJay/devops-beginner-bootcamp/blob/mai
 ![18](img/18.png) ![19](img/19.png) 
 
 ![recording2-ezgif.com-optimize.gif](img/recording2-ezgif.com-optimize.gif)
+
+It is recommended to renew your LetsEncrypt certificate at least every 60 days or more frequently. You can test renewal command in dry-run mode:
+`sudo certbot renew --dry-run`
+
+![20](img/20.png)
