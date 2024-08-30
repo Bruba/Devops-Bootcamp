@@ -197,4 +197,4 @@ img
 - Reload the webpage to ensure the load balancer distributes traffic evenly between your servers.
 
 
-![recording1](img/recording1.mp4)
+![recording1-ezgif.com-optimize.gif](img/recording1-ezgif.com-optimize.gif)
