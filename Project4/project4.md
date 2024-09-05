@@ -123,12 +123,30 @@ You can choose 0.0.0.0/0 to permit access from anywhere, but for added security,
 
 - Open a web browser of your choice and try accessing the following URL: **`http://<Public-IP-Address>:80`**
 
+- If the installation was successful, you should see this page.
+
 ![13](img/13.png)
 
-- If the installation was successful, you should see this page.
+### Install MYSQL
+
+- To install this software using 'apt', run the command **`sudo apt install mysql-server`**. When prompted, confirm the installation by typing 'Y' and then pressing ENTER.
 
 ![14](img/14.png)
 
+- After the installation is complete, log in to the MySQL console by typing: **`sudo mysql`**.
 
+> [!NOTE]
+It's recommended that you run a security script included with MySQL to enhance security. Before running the script, set a password for the root user using the default authentication method **mysql_native_password**. you can choose any password you prefer.
 
+- Run the following command to set the password for the root user with the MySQL native password authentication method: **`ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'pass';`**. Exit the MySQL shell when you're done by typing **`exit`**.
 
+- Start the interactive script by running: **`sudo mysql_secure_installation`①**. Answer **y**② for yes, or any other key to continue without enabling specific options.
+
+![15](img/15.png)
+
+- Set your **password validation policy level**.Type 0 for LOW password policy level
+
+> [!NOTE]
+the password validation policy level was set to 0 because I don't require much security, as I will be terminating all resources immediately after this project. However, on the job, it's advised to use the strongest level, which is 2.
+
+- Enable MySQL to start on boot by executing **`sudo systemctl enable mysql`①**, and then confirm its status with the **`sudo systemctl status mysql`②** command.
