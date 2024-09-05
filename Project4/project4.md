@@ -157,3 +157,14 @@ the password validation policy level was set to 0 because I don't require much s
 
 - Install PHP along with required extensions by running the following script: **`sudo apt install php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip`**.
 
+![17](img/17.png)
+
+**`sudo apt install php libapache2-mod-php php-mysql`**
+
+![18](img/18.png)
+
+- Confirm the downloaded PHP version by running **`php -v`**.
+
+![19](img/19.png)
+
+### Creating A Virtual Host For Your Website Using Apache
