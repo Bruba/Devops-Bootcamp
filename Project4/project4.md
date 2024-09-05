@@ -168,3 +168,72 @@ the password validation policy level was set to 0 because I don't require much s
 ![19](img/19.png)
 
 ### Creating A Virtual Host For Your Website Using Apache
+- Create the directory for Projectlamp using the 'mkdir' command as follows:
+**`sudo mkdir /var/www/projectlamp`①** and assign ownership of the directory to our current system user using:
+**`sudo chown -R $USER:$USER /var/www/projectlamp`②**.
+
+![20](img/20.png)
+
+- Create and open a new configuration file in Apache's sites-available directory using your preferred command-line editor:
+**`sudo vi /etc/apache2/sites-available/projectlamp.conf`**.
+
+- Creating this will produce a new blank file. Paste the configuration text provided below into it:
+
+```
+<VirtualHost *:80>
+
+ServerName projectlamp
+
+ServerAlias www.projectlamp
+
+ServerAdmin webmaster@localhost
+
+DocumentRoot /var/www/projectlamp
+
+ErrorLog ${APACHE_LOG_DIR}/error.log
+
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
+```
+![21](img/21.png)
+
+- Save your changes by pressing the **`Esc`** key, then type **`:wq`** and press **`Enter`**.
+
+![22](img/22.png)
+
+- Run the ls command **`sudo ls /etc/apache2/sites-available`①** to show the **new file②** in the sites-available directory. you will see the projectlamp.conf file just created
+
+![23](img/23.png)
+
+- We can now enable the new virtual host using the a2ensite command: **`sudo a2ensite projectlamp`**.
+
+- To disable Apache's default website, use the a2dissite command. Type: **`sudo a2dissite 000-default`**.
+
+![24](img/24.PNG)
+
+- To ensure your configuration file doesn’t contain syntax errors, run: **`sudo apache2ctl configtest`**. You should see **"Syntax OK"** in the output if your configuration is correct.
+
+![25](img/25.PNG)
+
+- Finally run: **`sudo systemctl reload apache2`**. This will reload Apache for the changes to take effect.
+
+> [!NOTE]
+Our new website is now active, but the web root **`/var/www/projectlamp`** is still empty. Let's create an **`index.html`** file in that location to test that the virtual host works as expected.
+
+- To create the **index.html** file with the content **"Hello LAMP from Bruba"** in the /var/www/projectlamp directory, use the following command: **`sudo echo 'Hello LAMP from Bruba' > /var/www/projectlamp/index.html`**.
+
+![26](img/26.png)
+
+- Now, let's open our web browser and try to access our website using the IP address:
+
+**`http://<EC2-Public-IP-Address>:80`**
+
+> [!NOTE]
+Replace **`<EC2-Public-IP-Address>`** with your actual EC2 instance's public IP address.
+
+![27](img/27.png)
+
+- Remove the index.html file by running the following command: **`sudo rm /var/www/projectlamp/index.html `**
+
+### Enable PHP On The Website
