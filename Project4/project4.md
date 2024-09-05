@@ -36,3 +36,99 @@ MySQL is the database management system within the LAMP stack, responsible for s
 PHP is the scripting language in the LAMP stack, responsible for generating dynamic web content. As a server-side language, PHP processes code on the web server to create HTML content that is then sent to the user's browser. In the LAMP stack, PHP works in tandem with Apache to handle web requests and interact with the MySQL database to retrieve and manipulate data. For a WordPress website, PHP executes the core logic that powers the site, managing everything from user authentication to content management and plugin functionality. By seamlessly integrating with Apache and MySQL, PHP ensures that your WordPress site is dynamic, interactive, and capable of delivering a rich user experience.
 
 ---
+## Project 4
+
+|S/N | Project Tasks                                                       |
+|----|---------------------------------------------------------------------|
+| 1  |Deploy an Ubuntu Server                                              |
+| 2  |Set up your LAMP stack on the server                                 |
+| 3  |Configure the wordpress Application                                  |
+| 4  |Map the IP address to the DNS A record                               |
+| 5  |Validate the WordPress website setup by accessing the web address.   |
+
+## Key Concepts Covered in this project:
+
+- AWS (EC2 and Route 53)
+- Linux(Ubuntu)
+- Apache
+- MySQL
+- PHP
+- Wordpress
+- DNS
+- SSL (certbot)
+- OpenSSL command
+
+## Checklist
+
+- [x] Task 1: Deploy an Ubuntu Server
+- [x] Task 2: Set up your LAMP stack on the server
+- [x] Task 3: Configure the wordpress Application
+- [x] Task 4: Map the IP address to the DNS A record
+- [x] Task 5: Validate the WordPress website setup by accessing the web address.
+
+## Documentation
+
+Please reference [**Project1**](https://github.com/StrangeJay/devops-beginner-bootcamp/blob/main/project1/project1.md) for guidance on spinning up an Ubuntu server. and confirm the server is up and running
+
+![1](img/1.png)
+
+- Set an inbound rule for MYSQL in your security group. Click on **Security①** and select the **Security group②**.
+
+![2](img/2.png)
+
+-Click on  **Edit Inbound rule**  and then click on **Add rule**
+
+![3](img/3.png) ![4](img/4.png)
+
+- Click on **Custom TCP** and select **MySQL/Aurora**.
+
+![5](img/5.png)
+
+- Enter the **IP address①** you want to allow access and click **Save rules②**.
+
+![6](img/6.png)
+
+> [!NOTE]
+You can choose 0.0.0.0/0 to permit access from anywhere, but for added security, restrict access to MySQL exclusively to your Web Server’s IP address. In the Inbound Rule configuration, specify the source as /32
+
+- Open your **terminal**, cd into the folder where your keypair is located and connect to your Ubuntu server via SSH.
+
+![7](img/7.png)
+
+### Install Apache WEB Server on your Ubuntu Machine
+
+- To install Apache, run the following commands in your terminal.
+
+**`sudo apt update`** and **`sudo apt upgrade`**
+
+![8](img/8.png)
+
+**`sudo apt install apache2`**
+
+![9](img/9.png)
+
+- To enable Apache to start on boot, execute **`sudo systemctl enable apache2`①**, and then verify its status with the **`sudo systemctl status apache2`②** command.
+
+![10](img/10.png)
+
+- Now, let's check if our server is running and accessible both locally and from the Internet by executing the following command: **`curl http://localhost:80`**. it should show a default html file
+
+![11](img/11.png)
+
+*Now, it's time to test how our Apache HTTP server responds to requests from the Internet.*
+
+- Copy your **public IPv4 address** from your EC2 dashboard.
+
+![12](img/12.png)
+
+- Open a web browser of your choice and try accessing the following URL: **`http://<Public-IP-Address>:80`**
+
+![13](img/13.png)
+
+- If the installation was successful, you should see this page.
+
+![14](img/14.png)
+
+
+
+
