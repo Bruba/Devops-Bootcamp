@@ -150,3 +150,10 @@ It's recommended that you run a security script included with MySQL to enhance s
 the password validation policy level was set to 0 because I don't require much security, as I will be terminating all resources immediately after this project. However, on the job, it's advised to use the strongest level, which is 2.
 
 - Enable MySQL to start on boot by executing **`sudo systemctl enable mysql`①**, and then confirm its status with the **`sudo systemctl status mysql`②** command.
+
+![16](img/16.png)
+
+### Install PHP
+
+- Install PHP along with required extensions by running the following script: **`sudo apt install php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip`**.
+
