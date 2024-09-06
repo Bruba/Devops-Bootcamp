@@ -237,3 +237,61 @@ Replace **`<EC2-Public-IP-Address>`** with your actual EC2 instance's public IP 
 - Remove the index.html file by running the following command: **`sudo rm /var/www/projectlamp/index.html `**
 
 ### Enable PHP On The Website
+**First**, prioritize php over html
+
+With the default DirectoryIndex settings on Apache, a file named index.html will always take precedence over an index.php file. To change the precedence of index files (such as index.php over index.html) in Apache, you'll need to edit the dir.conf file. Here’s how you can do it:
+
+- Edit the dir.conf file using a text editor (such as nano or vi): **`sudo nano /etc/apache2/mods-enabled/dir.conf`**
+
+- Look for the DirectoryIndex directive within this file. It typically looks like this:
+
+```
+<IfModule mod_dir.c>
+    DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm
+</IfModule>
+```
+
+- To prioritize **index.php** over **index.html**, move **index.php** to the beginning of the list, like this:
+
+```
+<IfModule mod_dir.c>
+    DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
+</IfModule>
+```
+![28](img/28.png)
+
+exit **(ctrl+x)** and save the changes when prompted by pressing **Y** and then **Enter**
+
+- finally, reload APache2 for the changes to take effect:
+
+![29](img/29.png)
+Now, Apache will prioritize index.php over index.html when both files exist in the same directory.
+
+**Second**, create a new file named index.php
+- To create a new file named index.php inside your custom web root folder (/var/www/projectlamp), you can use the following command to open it in the nano text editor: **`nano /var/www/projectlamp/index.php`**.
+
+- This will create a new file. Copy and paste the following PHP code into the new file:
+
+```
+<?php
+
+phpinfo();
+```
+![30](img/30.png)
+
+- Once you've saved and closed the file, go back to your web browser and refresh the page. You should see something like this:
+
+![31](img/31.png)
+
+> [!NOTE]
+This page provides information about your server from the perspective of PHP. It is useful for debugging and to ensure that your settings are being applied correctly.
+
+If you can see this page in your browser, then congratulations🎉 your PHP installation is working as expected.
+After verifying the relevant information about your PHP server through that page, it's recommended to remove the file you created, as it contains sensitive information about your PHP environment and your Ubuntu server. You can use the rm command to do so:
+**`sudo rm /var/www/projectlamp/index.php`**.
+
+You can always recreate this page if you need to access the information again later.
+
+---
+
+### Install Wordpress
