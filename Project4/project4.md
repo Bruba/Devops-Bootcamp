@@ -341,7 +341,7 @@ This command allows you to create a new database (**wp_db**) within your MySQL e
 
 *feel free to Replace 'wp-sequel' with your preferred strong password for the MySQL user account.*
 
-- To grant your created user (jay@localhost) all privileges needed to work with the wp_db database in MySQL, use the following commands:
+- To grant your created user (bruba@localhost) all privileges needed to work with the wp_db database in MySQL, use the following commands:
 
 ```
 GRANT ALL PRIVILEGES ON wp_db.* TO bruba@localhost;
@@ -351,7 +351,7 @@ FLUSH PRIVILEGES;
 ![39](img/39.PNG)
 
 > [!NOTE]
-This grants all privileges **(ALL PRIVILEGES)** on all tables within the wp_db database **(`wp_db.*`)** to the user jay when accessing from localhost. The FLUSH PRIVILEGES command ensures that MySQL implements the changes immediately. Adjust the database name **(wp_db)** and username **(jay)** as per your setup.
+This grants all privileges **(ALL PRIVILEGES)** on all tables within the wp_db database **(`wp_db.*`)** to the user jay when accessing from localhost. The FLUSH PRIVILEGES command ensures that MySQL implements the changes immediately. Adjust the database name **(wp_db)** and username **(bruba)** as per your setup.
 
 - Type **`exit`** to exit the MySQL shell.
 
@@ -380,7 +380,7 @@ Once you've established a database for WordPress, the next crucial step is setti
 
 ![43](img/43.PNG)
 
-- After updating the document root to **`/var/www/html`** directory in your editor, save the changes and exit.
+- replace **`/var/www/projectlamp`** document root to **`/var/www/html`** directory in your editor, save the changes and exit.
 
 ![44](img/44.PNG)
 
@@ -401,7 +401,7 @@ Replace **<EC2 IP>** with the IP address of your EC2 instance when accessing you
   - **Username②:** Choose a username for logging into WordPress.
   - **Password③:** Set a secure password to protect your WordPress account.
   - **Your email④:** Provide your email address to receive updates and notifications.
-  - **Search engine visibility⑤:** You can leave this box unchecked to prevent search engines from indexing your site until it's ready.
+  - **Search engine visibility:** You can leave this box unchecked to prevent search engines from indexing your site until it's ready.
 
 ![46](img/46.PNG)
 
@@ -421,4 +421,77 @@ Visit [**Project1**](https://github.com/StrangeJay/devops-beginner-bootcamp/blob
 - Point your domain's DNS records to the IP addresses of your Apache load balancer server.
 
 - In route 53, click on **Create record**.
+
+- Paste your **IP address➀** and then click on **Create records➁** to create the root domain.
+![48](img/48.png)
+
+- Click on **Create record** again, to create the record for your sub domain in this case www.domain name.
+
+- To update your Apache configuration file in the sites-available directory to point to your domain name, use the command: **`sudo nano /etc/apache2/sites-available/projectlamp.conf`**.
+
+> [!NOTE]
+This command opens the **`projectlamp.conf`** file in the nano text editor with superuser privileges **(`sudo`)**. Within the editor, adjust the necessary details to reflect your domain name configuration.
+
+- Ensure that the server settings in your Apache configuration point to your domain name, and that the document root accurately points to your WordPress directory. Once you've made these adjustments, save the changes and exit the editor.
+
+```
+<VirtualHost *:80>
+    ServerName <Your root domain name>
+    ServerAlias <Your sub domain name>
+    ServerAdmin webmaster@<Your root domain name>
+
+    DocumentRoot /var/www/html/wordpress
+
+    <Directory /var/www/html/wordpress>
+        Options Indexes FollowSymLinks
+       # AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+```
+![49](img/49.png)
+
+> [!NOTE]
+The new configuration defines how Apache should handle requests for your domain, and its subdomain. With this configuration: Apache will handle requests for **bruba.eu** and **www.bruba.eu**. Files will be served from the **`/var/www/html/wordpress`** directory. Directory listings and symbolic links are allowed. The directory can be accessed by any client.
+Error logs will be written to **`/var/log/apache2/error.log`**. Access logs will be written to **`/var/log/apache2/access.log`** in the combined log format.
+
+- To update your **`wp-config.php`** file with DNS settings, use the following command: **`sudo nano wp-config.php`** and add these lines to the file:
+
+```
+/** MY DNS SETTINGS */
+define('WP_HOME', 'http://<domain name>');
+
+define('WP_SITEURL', 'http://<domain name>');
+```
+
+Replace **`http://<domain name>`** with your actual domain name. Save the changes and exit the editor.
+
+![50](img/50.png)
+
+- Reload your Apache server to apply the changes with the command: **`sudo systemctl reload apache2`**, After reloading, visit your website at **`http://<domain name>`** to view your WordPress site. Replace **<domain name>** with your actual domain name.
+![51](img/51.png)
+
+- To log in to your WordPress admin portal, visit **`http://<domain name>/wp-admin`**, Enter your **username①** and **password②**, then click on **log In③**. *Replace **<domain name>** with your actual domain name.*
+
+![52](img/52.png)
+
+> [!NOTE]
+My domain name is **bruba.eu**, so i'll visit **`http://bruba.eu/wp-admin`**.
+
+![53](img/53.png)
+
+- Now that your WordPress site is successfully configured to use your domain name, the next step is to secure it by requesting an SSL/TLS certificate.
+
+### Install certbot and Request For an SSL/TLS Certificate
+
+- Install certbot by executing the following commands:
+`sudo apt update`
+`sudo apt install certbot python3-certbot-apache`
+
+- Run the command **`sudo certbot --apache`** to request your SSL/TLS certificate. Follow the instructions provided by Certbot to select the domain name for which you want to enable HTTPS.
+
 
