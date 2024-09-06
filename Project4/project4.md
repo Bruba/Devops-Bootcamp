@@ -502,3 +502,8 @@ My domain name is **bruba.eu**, so i'll visit **`http://bruba.eu/wp-admin`**.
 
 ![55](img/55.png)
 ![56](img/56.png)
+
+---
+---
+
+#### End
