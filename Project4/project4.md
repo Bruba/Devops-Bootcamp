@@ -477,12 +477,10 @@ Replace **`http://<domain name>`** with your actual domain name. Save the change
 
 - To log in to your WordPress admin portal, visit **`http://<domain name>/wp-admin`**, Enter your **username①** and **password②**, then click on **log In③**. *Replace **<domain name>** with your actual domain name.*
 
-![52](img/52.png)
-
 > [!NOTE]
 My domain name is **bruba.eu**, so i'll visit **`http://bruba.eu/wp-admin`**.
 
-![53](img/53.png)
+![52](img/52.png)
 
 - Now that your WordPress site is successfully configured to use your domain name, the next step is to secure it by requesting an SSL/TLS certificate.
 
@@ -492,6 +490,15 @@ My domain name is **bruba.eu**, so i'll visit **`http://bruba.eu/wp-admin`**.
 `sudo apt update`
 `sudo apt install certbot python3-certbot-apache`
 
+![53](img/53.png)
+
 - Run the command **`sudo certbot --apache`** to request your SSL/TLS certificate. Follow the instructions provided by Certbot to select the domain name for which you want to enable HTTPS.
 
+- You should receive a message confirming that the certificate has been successfully obtained.
 
+![54](img/54.png)
+
+- Visit your website to confirm, and you'll notice that the **"not secure"** warning no longer appears, indicating that your site is now secure with HTTPS.
+
+![55](img/55.png)
+![56](img/56.png)
