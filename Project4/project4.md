@@ -323,4 +323,102 @@ The files must be owned by the user of your web server. Identify the web server'
 
 ### Create a Database For Wordpress
 
-- Access your MySQL root account with the following command: **`sudo mysql -u root -p`①**. Enter the **password②** you set earlier when prompted.
+- Access your MySQL root account with the following command: **`sudo mysql -u root -p`**. Enter the **password** you set earlier when prompted.
+![36](img/36.PNG)
+
+- To create a separate database named wp_db for WordPress to manage, execute the following command in the MySQL prompt: **`CREATE DATABASE wp_db;`**.
+
+![37](img/37.PNG)
+
+> [!NOTE]
+This command allows you to create a new database (**wp_db**) within your MySQL environment. Feel free to name it as you prefer.
+
+- To access the new database, you can create a MySQL user account with a strong password using the following command:
+
+**`CREATE USER bruba@localhost IDENTIFIED BY 'wp-sequel';`**
+
+![38](img/38.PNG)
+
+*feel free to Replace 'wp-sequel' with your preferred strong password for the MySQL user account.*
+
+- To grant your created user (jay@localhost) all privileges needed to work with the wp_db database in MySQL, use the following commands:
+
+```
+GRANT ALL PRIVILEGES ON wp_db.* TO bruba@localhost;
+FLUSH PRIVILEGES;
+```
+
+![39](img/39.PNG)
+
+> [!NOTE]
+This grants all privileges **(ALL PRIVILEGES)** on all tables within the wp_db database **(`wp_db.*`)** to the user jay when accessing from localhost. The FLUSH PRIVILEGES command ensures that MySQL implements the changes immediately. Adjust the database name **(wp_db)** and username **(jay)** as per your setup.
+
+- Type **`exit`** to exit the MySQL shell.
+
+- Grant executable permissions recursively (-R) to the wordpress folder using the following command: **`sudo chmod -R 777 wordpress/`**
+
+> [!NOTE]
+This command sets read (r), write (w), and execute (x) permissions for the owner, group, and others on all files and directories within the wordpress folder. Using 777 permissions is quite permissive and may not be necessary for all files and folders; consider adjusting permissions based on security requirements.
+
+- Change into the WordPress directory by running the command: **`cd wordpress`**.
+![40](img/40.PNG)
+
+### Configure Wordpress
+
+Once you've established a database for WordPress, the next crucial step is setting up and configuring WordPress itself. To begin, you'll need to create a configuration file tailored for WordPress.
+
+- Rename the sample WordPress configuration file with the command: **`mv wp-config-sample.php wp-config.php`**.
+
+- Edit the **`wp-config.php`** file using the command: **`sudo nano wp-config.php`**.
+
+![41](img/41.png)
+
+- Update the database settings in the **`wp-config.php`** file by replacing placeholders like **database_name_here**, **username_here**, and **password_here** with your actual database details.
+![42](img/42.png)
+
+- Modify the configuration file projectlamp.conf: **`sudo nano /etc/apache2/sites-available/projectlamp.conf`** to update the document root to the directory where your WordPress installation is located.
+
+![43](img/43.PNG)
+
+- After updating the document root to **`/var/www/html`** directory in your editor, save the changes and exit.
+
+![44](img/44.PNG)
+
+- Reload Apache for the changes to take effect: **`sudo systemctl reload apache2`**.
+
+- Once you've completed these steps, you can access your WordPress page to complete the installation. Open your web browser and go to **`http://<EC2 IP>/wordpress/`**. This will lead you to the WordPress setup wizard where you can finalize the installation process.
+
+> [!NOTE]
+Replace **<EC2 IP>** with the IP address of your EC2 instance when accessing your WordPress page.
+
+- Select your preferred language and then click on **Continue** to proceed.
+
+![45](img/45.PNG)
+
+- Enter the required information and click on **Install WordPress** once you have finished.
+
+  - **Site Title①:** Enter the name of your WordPress website. It's recommended to use your domain name for better optimization.
+  - **Username②:** Choose a username for logging into WordPress.
+  - **Password③:** Set a secure password to protect your WordPress account.
+  - **Your email④:** Provide your email address to receive updates and notifications.
+  - **Search engine visibility⑤:** You can leave this box unchecked to prevent search engines from indexing your site until it's ready.
+
+![46](img/46.PNG)
+
+- WordPress has been successfully installed. You can now log in to your admin dashboard using the previously set up information by clicking the **Log In** button.
+- Enter your username and password, then click **Log In** to access your WordPress admin dashboard.
+- Once you successfully log in, you will be greeted by the WordPress dashboard page.
+
+![47](img/47.png)
+
+### Create An A Record
+
+To make your website accessible via your domain name rather than the IP address, you'll need to set up a DNS record. I did this by buying my domain from Namecheap and then moving hosting to AWS Route 53, where I set up an A record.
+
+> [!NOTE]
+Visit [**Project1**](https://github.com/StrangeJay/devops-beginner-bootcamp/blob/main/project1/project1.md) for instructions on how to create a hosted zone.
+
+- Point your domain's DNS records to the IP addresses of your Apache load balancer server.
+
+- In route 53, click on **Create record**.
+
