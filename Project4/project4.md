@@ -264,7 +264,7 @@ exit **(ctrl+x)** and save the changes when prompted by pressing **Y** and then 
 
 - finally, reload APache2 for the changes to take effect:
 
-![29](img/29.png)
+![29](img/29.PNG)
 Now, Apache will prioritize index.php over index.html when both files exist in the same directory.
 
 **Second**, create a new file named index.php
@@ -281,7 +281,7 @@ phpinfo();
 
 - Once you've saved and closed the file, go back to your web browser and refresh the page. You should see something like this:
 
-![31](img/31.png)
+![31](img/31.PNG)
 
 > [!NOTE]
 This page provides information about your server from the perspective of PHP. It is useful for debugging and to ensure that your settings are being applied correctly.
@@ -295,3 +295,4 @@ You can always recreate this page if you need to access the information again la
 ---
 
 ### Install Wordpress
+
