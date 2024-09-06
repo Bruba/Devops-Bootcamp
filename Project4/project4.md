@@ -494,9 +494,9 @@ My domain name is **bruba.eu**, so i'll visit **`http://bruba.eu/wp-admin`**.
 
 - Run the command **`sudo certbot --apache`** to request your SSL/TLS certificate. Follow the instructions provided by Certbot to select the domain name for which you want to enable HTTPS.
 
-- You should receive a message confirming that the certificate has been successfully obtained.
-
 ![54](img/54.png)
+
+- You should receive a message confirming that the certificate has been successfully obtained.
 
 - Visit your website to confirm, and you'll notice that the **"not secure"** warning no longer appears, indicating that your site is now secure with HTTPS.
 
