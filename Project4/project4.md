@@ -237,6 +237,7 @@ Replace **`<EC2-Public-IP-Address>`** with your actual EC2 instance's public IP 
 - Remove the index.html file by running the following command: **`sudo rm /var/www/projectlamp/index.html `**
 
 ### Enable PHP On The Website
+
 **First**, prioritize php over html
 
 With the default DirectoryIndex settings on Apache, a file named index.html will always take precedence over an index.php file. To change the precedence of index files (such as index.php over index.html) in Apache, you'll need to edit the dir.conf file. Here’s how you can do it:
@@ -296,3 +297,30 @@ You can always recreate this page if you need to access the information again la
 
 ### Install Wordpress
 
+After setting up our LAMP environment, we can start installing WordPress. First, we'll download the WordPress installation files and place them in the default web server root directory: **/var/www/html**.
+
+- Navigate to the directory using the cd command **`cd /var/www/html`**, and then download the WordPress installation files using the following command: **`sudo wget -c http://wordpress.org/latest.tar.gz`**
+
+![32](img/32.PNG)
+
+- Extract the files from the downloaded WordPress archive using the command: **`sudo tar -xzvf latest.tar.gz`**
+
+- Run the command **`ls -l`** to confirm the existence of the **wordpress** directory in the current location (`/var/www/html`).
+
+![33](img/33.PNG)
+
+> [!NOTE]
+The files must be owned by the user of your web server. Identify the web server's user and assign the appropriate permissions accordingly. The user **`www-data`** is widely adopted as the default user for web server processes, especially on Ubuntu and Debian systems. This user oversees the operation of web server software (like Apache or Nginx) and manages incoming web requests. However, for verification and for tasks involving services that may not have a predefined user, checking the user of the web server is advisable.
+
+- Check the user running your web server with the command: **`ps aux | grep apache | grep -v grep`**.
+*This command filters processes related to Apache (apache2 on Ubuntu) and displays information about the user running those processes.*
+
+![34](img/34.png)
+
+- Grant ownership of the WordPress directory and its files to the web server user **(www-data)** by running the command: **`sudo chown -R www-data:www-data /var/www/html/wordpress`**.
+
+![35](img/35.png)
+
+### Create a Database For Wordpress
+
+- Access your MySQL root account with the following command: **`sudo mysql -u root -p`①**. Enter the **password②** you set earlier when prompted.
