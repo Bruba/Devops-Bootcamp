@@ -98,3 +98,11 @@ Consul is an open-source tool by HashiCorp for service discovery, configuration 
 - [x] Task 5: Setup Backend Servers
 - [x] Task 6: Setup Load-Balancer
 - [x] Task 7: Validate Service Discovery Setup
+
+## Documentation
+
+Please reference [**Project1**](https://github.com/StrangeJay/DevOpsMastery/blob/main/project1/project1.md) for guidance on spinning up an Ubuntu server. we will be spinning up 4 ubuntu servers and renaming them accordingly.
+
+- Rename your EC2 instances to prevent any confusion during your project.
+
+- Click on the **edit icon**.
