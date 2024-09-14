@@ -148,7 +148,7 @@ This port supports both TCP and UDP protocols, so you'll need to configure both.
 
 - Choose the appropriate CIDR block.
 
-![7](img/7.PNG)
+![7](img/7.png)
 
 > [!NOTE]
 For the purpose of this project, security measures have been intentionally relaxed by opening SSH, HTTP, HTTPS, and Consul ports to all traffic (0.0.0.0) for rapid development and testing. This configuration is highly insecure and should never be used in production environments.
@@ -161,7 +161,7 @@ Repeat this process until you've opened up all necessary ports.
 
 - Verify that all the necessary ports are open.
 
-![8](img/8.PNG)
+![8](img/8.png)
 
 - Click on **Save rules** to apply the updated security group settings.
 
@@ -175,3 +175,4 @@ Currently, the ports are being opened manually one at a time. However, in future
 - SSH into the consul server and run **`sudo apt update`** to refresh the package cache.
 
 - Visit the consul [**downloads**](https://developer.hashicorp.com/consul/install) page to **copy** the installation command.
+
