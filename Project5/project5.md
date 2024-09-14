@@ -105,4 +105,73 @@ Please reference [**Project1**](https://github.com/StrangeJay/DevOpsMastery/blob
 
 - Rename your EC2 instances to prevent any confusion during your project.
 
-- Click on the **edit icon**.
+- Click on the **edit icon**
+- rename your server and click the **checkmark icon**.
+![1](img/1.png)
+
+- Name your Consul server, LoadBalancer server, and the two backend servers for easy identification.
+![2](img/2.png)
+
+### Allow Required Ports In The Security Group
+
+The Consul service requires specific ports to function correctly. Please open the following ports in your security group.
+
+### Consul Servers
+
+|S/N |Port Name  |Protocol      |Default Port   |
+|----|-----------|--------------|---------------|
+| 1  |DNS        |TCP and UDP   |8600           |
+| 2  |HTTP API   |TCP           |8500           |
+| 3  |HTTPS API  |TCP           |8501           |
+| 4  |gRPC       |TCP           |8502           |
+| 5  |gRPC TLS   |TCP           |8503           |
+| 6  |Server RPC |TCP           |8300           |
+| 7  |LAN Serf   |TCP and UDP   |8301           |
+| 8  |WAN Serf   |TCP and UDP   |8302           |
+
+- Select the **checkbox** next to your instance, click on **Security①**, and then click on the **security group ID②**.
+![3](img/3.PNG)
+
+- Click on **Edit inbound rules**.
+
+![4](img/4.png)
+
+- Click on **Add rule**.
+
+![5](img/5.PNG)
+
+- Select **custom UDP** or **custom TCP** depending on which one you want to add, Enter the **Port range according to the table above**.
+![6](img/6.PNG)
+
+> [!NOTE]
+This port supports both TCP and UDP protocols, so you'll need to configure both.
+
+- Choose the appropriate CIDR block.
+
+![7](img/7.PNG)
+
+> [!NOTE]
+For the purpose of this project, security measures have been intentionally relaxed by opening SSH, HTTP, HTTPS, and Consul ports to all traffic (0.0.0.0) for rapid development and testing. This configuration is highly insecure and should never be used in production environments.
+In a production setting, it is crucial to:
+Create separate security groups for each type of instance (consul server, backend server, load balancer), strictly limit inbound and outbound traffic to necessary ports and IP addresses, and implement additional security measures like network ACLs, IAM roles, and encryption.
+By following these guidelines, you can significantly enhance the security of your infrastructure and protect your systems from unauthorized access.
+
+> [!NOTE]
+Repeat this process until you've opened up all necessary ports.
+
+- Verify that all the necessary ports are open.
+
+![8](img/8.PNG)
+
+- Click on **Save rules** to apply the updated security group settings.
+
+> [!NOTE]
+Currently, the ports are being opened manually one at a time. However, in future projects, you'll learn how to automate these tasks, such as creating multiple instances and configuring all the security group rules at once using code. You'll explore this further when you work with Terraform.
+
+---
+
+### Setup Consul Server
+
+- SSH into the consul server and run **`sudo apt update`** to refresh the package cache.
+
+- Visit the consul [**downloads**](https://developer.hashicorp.com/consul/install) page to **copy** the installation command.
