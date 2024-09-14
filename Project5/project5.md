@@ -378,3 +378,30 @@ sudo vi /etc/consul.d/consul.hcl
 }
 ```
 ![30](img/30.PNG)
+
+This configuration registers your backend servers with the Consul server and sets up a health check that uses curl to test the service every 3 seconds.
+
+- Verify the configurations by executing the following command: **`consul validate /etc/consul.d`**.
+
+![31](img/31.PNG)
+
+- Once all configurations are complete, start the Consul agent with the following command: **`sudo nohup consul agent -config-dir /etc/consul.d/ &`**.
+
+![32](img/32.PNG)
+
+- To verify if everything is working correctly, visit your Consul UI. If you see the backend listed in the UI as depicted below, it indicates that the backend has successfully registered itself with Consul.
+![33](img/33.PNG)
+![34](img/34.PNG)
+
+---
+
+### Setup Load-Balancer
+
+Next, set up the load balancer to automatically update its backend server information based on the service registry maintained by Consul.
+To retrieve the backend server details, we will use the **`consul-template`** binary. This tool interacts with the Consul server via API calls to fetch the backend server information. It then uses a template to substitute values and generate the **`loadbalancer.conf`** file, which is utilized by Nginx.
+
+- Log in to the load-balancer server. Update the package information and install unzip with the following commands:
+
+```
+sudo apt-get update -y
+sudo apt-get install unzip -y
