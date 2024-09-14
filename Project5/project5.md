@@ -172,7 +172,24 @@ Currently, the ports are being opened manually one at a time. However, in future
 
 ### Setup Consul Server
 
-- SSH into the consul server and run **`sudo apt update`** to refresh the package cache.
+- SSH into the consul server and run **`sudo apt update`** and **`sudo apt upgrade`** to refresh the package cache.
+![10](img/10.png) ![11](img/11.png)
 
 - Visit the consul [**downloads**](https://developer.hashicorp.com/consul/install) page to **copy** the installation command.
 
+![9](img/9.png)
+
+Or execute the following commands to install Consul.
+
+```
+wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+sudo apt update && sudo apt install consul
+```
+![12](img/12.png)
+
+- Confirm Consul installation by checking its version with the **`consul --version`** command.
+
+![13](img/13.png)
