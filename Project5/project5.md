@@ -310,3 +310,71 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://
 
 sudo apt update && sudo apt install consul
 ```
+![26](img/26.PNG)
+
+- Verify that Consul is installed properly by running the following command: **`consul --version`**.
+
+![28](img/28.PNG)
+
+- Replace the default Consul configuration file **`config.hcl`** located in **`/etc/consul.d`** with your custom **`consul.hcl`** file.
+
+- Rename the default file and create a new one by running the following commands:
+
+```
+sudo mv /etc/consul.d/consul.hcl /etc/consul.d/consul.hcl.back
+sudo vi /etc/consul.d/consul.hcl
+```
+
+- Add the following contents to the file. Replace **`<YOUR_ENCRYPTED_KEY>`①** with your encryption key. Also, replace **`3.93.190.190`②** with your Consul server's IP address.
+
+```
+"server" = false
+"datacenter" = "dc1"
+"data_dir" = "/var/consul"
+"encrypt" = "<YOUR_ENCRYPTED_KEY>"
+"log_level" = "INFO"
+"enable_script_checks" = true
+"enable_syslog" = true
+"leave_on_terminate" = true
+"start_join" = ["3.93.190.190"]
+```
+![29](img/29.PNG)
+---
+
+**Here's an explanation of the Consul agent configuration settings:**
+
+1. **`server = false`**: Indicates that this node is not a Consul server, but a client (agent). A Consul server handles requests from other Consul agents, while a client node registers services and performs checks.
+
+2. **`datacenter = "dc1"`**: Specifies the datacenter name where the Consul agent operates. This should match the datacenter configuration on the Consul server to ensure proper communication.
+
+3. **`data_dir = "/var/consul"`**: Defines the directory where the Consul agent will store its data files. This directory must be writable by the Consul agent process.
+
+4. **`encrypt = "<YOUR_ENCRYPTED_KEY>"`**: Provides the encryption key for securing communication between Consul agents and the Consul server. Replace **`<YOUR_ENCRYPTED_KEY>`** with the actual key generated using **`consul keygen`**.
+
+5. **`log_level = "INFO"`**: Sets the verbosity of the log output. **`INFO`** level provides a balance between detail and readability, showing general information about Consul operations.
+
+6. **`enable_script_checks = true`**: Enables the execution of script-based health checks. When set to **`true`**, the Consul agent can run custom scripts to check service health.
+
+7. **`enable_syslog = true`**: Allows logging of Consul messages to the syslog service. When enabled, logs will be sent to the system's logging facility, which can be useful for centralized logging and monitoring.
+
+8. **`leave_on_terminate = true`**: Ensures that the Consul agent will automatically deregister itself from the Consul server when the agent process is terminated. This helps maintain accurate service registration and avoids stale entries.
+
+9. **`start_join = ["3.93.190.190"]`**: Lists the addresses of Consul servers or agents that this Consul client should contact when starting up to join the Consul cluster. Replace **`3.93.190.190`** with the IP address of your Consul server. This setting helps the agent locate and connect to the Consul server to begin registering services.
+
+---
+
+- Next, we need to create a **`backend.hcl`** configuration file in the **`/etc/consul.d`** directory to register the Nginx service and its health check URLs with the Consul server. This will enable the Consul server to continuously monitor the health of the Nginx service. Use the following command to create and edit the file: **`sudo vi /etc/consul.d/backend.hcl`**.
+
+- Add the following contents to the **`backend.hcl`** file and save it.
+
+```
+"service" = {
+  "Name" = "backend"
+  "Port" = 80
+  "check" = {
+    "args" = ["curl", "localhost"]
+    "interval" = "3s"
+  }
+}
+```
+![30](img/30.PNG)
