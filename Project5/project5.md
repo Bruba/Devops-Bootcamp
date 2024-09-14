@@ -193,3 +193,88 @@ sudo apt update && sudo apt install consul
 - Confirm Consul installation by checking its version with the **`consul --version`** command.
 
 ![13](img/13.png)
+
+- All the Consul server configurations are located in the **`/etc/consul.d`** folder. To configure the Consul server, start by backing up the default configuration file **`consul.hcl`** by renaming it to **`consul.hcl.back`**, using the following command: **`sudo mv /etc/consul.d/consul.hcl /etc/consul.d/consul.hcl.back`**
+
+![14](img/14.png)
+
+- Generate an **encrypted key** using the **`consul keygen`** command
+![15](img/15.png)
+
+- Create a new file named **`consul.hcl`** in the **`/etc/consul.d`** directory, using the following command: **`sudo vi /etc/consul.d/consul.hcl`**
+![16](img/16.png)
+
+- Add the following content to the **`consul.hcl`** file, replacing **<YOUR_ENCRYPTED_KEY>** with the encrypted key you generated:
+
+```
+"bind_addr" = "0.0.0.0"
+"client_addr" = "0.0.0.0"
+"data_dir" = "/var/consul"
+"encrypt" = "<YOUR_ENCRYPTED_KEY>"
+"datacenter" = "dc1"
+"ui" = true
+"server" = true
+"log_level" = "INFO"
+```
+![17](img/17.png)
+
+Save this file after adding the content.
+
+![18](img/18.png)
+
+---
+
+**Here's an explanation of each configuration setting in the Consul configuration file:**
+
+1. **`bind_addr = "0.0.0.0"`**: Specifies the IP address on which Consul will bind to listen for incoming connections. `0.0.0.0` means Consul will listen on all available network interfaces.
+
+2. **`client_addr = "0.0.0.0"`**: Determines the IP address on which the Consul client API will be available. Setting it to `0.0.0.0` allows connections from any IP address.
+
+3. **`data_dir = "/var/consul"`**: Specifies the directory where Consul will store its data, such as the state and logs.
+
+4. **`encrypt = "<YOUR_ENCRYPTED_KEY>"`**: Sets the encryption key for securing communication between Consul servers and clients. Replace this placeholder with your actual generated encryption key.
+
+5. **`datacenter = "dc1"`**: Defines the datacenter name that this Consul server will use. Consul uses datacenters to organize services and nodes.
+
+6. **`ui = true`**: Enables the Consul Web UI. This provides a graphical interface for interacting with Consul's data.
+
+7. **`server = true`**: Indicates that this instance is a Consul server. Server nodes participate in the consensus protocol and store the state of the system.
+
+8. **`log_level = "INFO"`**: Sets the verbosity of the logs. `INFO` level provides a balance of details, logging general information, warnings, and errors.
+
+---
+
+- Run the following command to start the Consul server in the background: **`sudo nohup consul agent -dev -config-dir /etc/consul.d/ &`**.
+
+![19](img/19.PNG)
+
+> [!NOTE]
+We use the **`-dev`** flag to indicate that we are running a single Consul server in development mode.
+
+- You can check the status of the Consul server with the following command: **`consul members`**.
+
+![20](img/20.PNG)
+
+- If you visit **`<EC2 Consul Server IP>:8500`**, you should be able to access the Consul dashboard.
+
+![21](img/21.PNG)
+
+> [!NOTE]
+Ensure you replace **`<EC2 Consul Server IP>`** with the public IP address of the EC2 instance you're using as the Consul server.
+
+---
+### Setup Backend Servers
+
+Since we have the Consul server up and running, let's manage our Nginx backend servers more easily using service discovery. To do this, we'll install Nginx and the Consul agent on all the backend servers. The Consul agent acts like a messenger, automatically registering both the server and the Nginx service running on it with the Consul server, which acts like a central directory.
+
+**Apply the configurations below on both backend servers:**
+
+- SSH into the backend servers and run **`sudo apt-get update -y`** to update package information.
+
+![22](img/22.PNG)
+
+> [!NOTE]
+The `y` flag automatically answers **"yes"** to any prompts during the installation process, ensuring that the installation proceeds without requiring manual confirmation.
+
+- Install Nginx on both instances by running the following command: **`sudo apt install nginx -y`**.
+![23](img/23.PNG)
