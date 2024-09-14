@@ -278,3 +278,35 @@ The `y` flag automatically answers **"yes"** to any prompts during the installat
 
 - Install Nginx on both instances by running the following command: **`sudo apt install nginx -y`**.
 ![23](img/23.PNG)
+
+> [!NOTE]
+After installing Nginx, navigate to the default HTML directory and modify the index.html file on both servers to differentiate them.
+
+- Navigate to the HTML directory by executing the following command: **`cd /var/www/html`**.
+
+- Open the HTML file with your preferred text editor to make edits: **`sudo vi index.html`**.
+
+- Copy the HTML content below into the index.html file. On the second server, replace **SERVER-01** with **SERVER-02** in the HTML file to differentiate between the two backend servers.
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kanekis Backend Server </title>
+</head>
+<body>
+	<h1>This is Backend SERVER-01</h1>
+</body>
+</html>
+```
+![24](img/24.PNG) ![25](img/25.PNG)
+
+- Install Consul as an agent on the servers. Run the following commands to install Consul:
+
+```
+wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+sudo apt update && sudo apt install consul
+```
