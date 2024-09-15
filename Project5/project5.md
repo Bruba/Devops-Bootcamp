@@ -405,3 +405,153 @@ To retrieve the backend server details, we will use the **`consul-template`** bi
 ```
 sudo apt-get update -y
 sudo apt-get install unzip -y
+```
+
+![35](img/35.PNG)
+
+- Install Nginx using the following command: **`sudo apt install nginx -y`**.
+
+![36](img/36.PNG)
+
+- Download the consul-template binary using the following command:
+
+```
+sudo curl -L  https://releases.hashicorp.com/consul-template/0.30.0/consul-template_0.30.0_linux_amd64.zip -o /opt/consul-template.zip
+
+sudo unzip /opt/consul-template.zip -d  /usr/local/bin/
+```
+- To verify the installation of consul-template, check its version with the following command: **`consul-template --version`**.
+
+![37](img/37.PNG)
+
+- Create and edit a file named **`load-balancer.conf.ctmpl`** in the **`/etc/nginx/conf.d`** directory, using the following command: **`sudo vi /etc/nginx/conf.d/load-balancer.conf.ctmpl`**.
+
+- Paste the following content into the file:
+
+```
+upstream backend {
+ {{- range service "backend" }} 
+  server {{ .Address }}:{{ .Port }}; 
+ {{- end }} 
+}
+
+server {
+   listen 80;
+
+   location / {
+      proxy_pass http://backend;
+   }
+}
+```
+![38](img/38.PNG)
+
+**Here's a breakdown of the configuration:**
+
+1. **Upstream Block**
+
+```
+upstream backend {
+ {{- range service "backend" }} 
+  server {{ .Address }}:{{ .Port }}; 
+ {{- end }} 
+}
+
+```
+- **upstream backend:** This defines a group of backend servers that Nginx can load-balance requests across.
+- **{{- range service "backend" }}:** This is a Consul-Template directive that iterates over all services registered with Consul under the name "backend".
+- **server {{ .Address }}:{{ .Port }};:** For each backend service, it adds an entry to the upstream block with the server's address and port.
+- **{{- end }}:** Ends the iteration block.
+
+2. **Server Block**
+```
+server {
+   listen 80;
+
+   location / {
+      proxy_pass http://backend;
+   }
+}
+
+```
+- **server:** Defines a virtual server that listens for incoming requests.
+- **listen 80:** Specifies that this server block will listen on port 80 (the default HTTP port).
+- **location /:** Defines a location block for all requests to the root URL (/).
+- **proxy_pass http://backend:** Forwards incoming requests to the upstream group named "backend" defined above. Nginx will use the addresses and ports listed in the upstream backend block to balance the requests.
+
+> [!NOTE]
+This setup keeps Nginx's backend server list in sync with Consul's. It ensures that Nginx always routes traffic to the currently available backend servers.
+
+---
+
+- Create a file named **`consul-template.hcl`** in the **`/etc/nginx/conf.d/`** directory. This configuration file is used by **consul-template** to specify details about the Consul server IP and the destination path where the processed load-balancer.conf file will be saved.
+
+Use the following command to create and edit the file: **`sudo vi /etc/nginx/conf.d/consul-template.hcl`**.
+
+- Add the following content to the file, replacing **`<Consul Server IP>`** with your Consul server's IP address. This configuration specifies the Consul server details, the path to the template file, the destination for the rendered Nginx configuration, and the command to reload Nginx after updating the configuration.
+
+```
+consul {
+ address = "<Consul Server IP>:8500"
+
+ retry {
+   enabled  = true
+   attempts = 12
+   backoff  = "250ms"
+ }
+}
+template {
+ source      = "/etc/nginx/conf.d/load-balancer.conf.ctmpl"
+ destination = "/etc/nginx/conf.d/load-balancer.conf"
+ perms       = 0600
+ command = "service nginx reload"
+}
+```
+![39](img/39.PNG)
+
+- Delete the default server configuration to disable it by running the following command: **`sudo rm /etc/nginx/sites-enabled/default`**.
+![40](img/40.PNG)
+
+*The default server configuration file should be deleted to avoid inconsistencies with the server's settings.*
+
+- Restart Nginx to apply the changes by running the following command: **`sudo systemctl restart nginx`**.
+
+- Once configurations are complete, start the Consul Template agent using the following command. It continuously monitors Consul for changes.
+
+```
+sudo nohup consul-template -config=/etc/nginx/conf.d/consul-template.hcl &
+```
+
+![41](img/41.PNG)
+
+- Upon completion, a load-balancer.conf file will be created with backend server information populated from the Consul service registry.
+![42](img/42.PNG)
+
+Now, if you access the load balancer IP in your web browser, it will display the custom HTML content from one of the backend servers. When you refresh the page, the load balancer will route your request to the other backend server, displaying its custom HTML content.
+![43](img/43.PNG)
+![44](img/44.PNG)
+
+This behavior occurs because the load balancer uses a round-robin algorithm by default, distributing incoming requests evenly across all available backend servers.
+
+---
+
+### Service Discovery Test
+
+Now that everything is set up and running, you can test the configuration by observing what happens when you stop one of your backend servers.
+
+
+Stop one of the backend servers. The Consul server will monitor the health of each registered service. Once a backend server is stopped, Consul will detect the server's unavailability and mark it as unhealthy. The health check for that server will fail, and it will be removed from the load balancer's active pool of servers.
+
+![45](img/45.PNG)
+
+As a result, the load balancer will only direct traffic to the remaining healthy backend servers. This ensures that your application continues to run smoothly without any disruption to users, demonstrating the effectiveness of your service discovery and health check configuration with Consul and Nginx.
+
+<video src="Project5/img/backend - Consul - Google Chrome 2024-09-11 17-43-15.mp4" width="320" height= "240" controls> </video>
+
+**Service Check:** These checks are specific to the services running on the nodes (in this case, Nginx). When you stopped Nginx, the service check that monitors the health of Nginx on that particular node would fail, leading to the "all service checks failed" error.
+
+**Node checks:** These checks monitor the overall health of the node itself, which includes the underlying operating system and possibly other metrics (like CPU, memory, and disk usage). Since stopping Nginx does not necessarily mean the node is unhealthy (the node could still be up and running, responding to pings, etc.), the node checks would still pass.
+
+---
+---
+
+#### End
