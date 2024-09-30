@@ -70,3 +70,7 @@ Imagine you want to get a list of users from a server:
 
 Watch this short video to understand more [here](https://youtu.be/ByGJQzlzxQg?si=Ii2hyafleokyUVkB)
 ---
+
+## Setting Up the Project
+
+To create the project directory structure and set up a virtual environment, run the following commands in your VScode command line git bash or powershell:
