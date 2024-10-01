@@ -245,9 +245,9 @@ Open your browser and go to `http://127.0.0.1:5000` to see your application.
     curl -o- "https://dl-cli.pstmn.io/install/osx_64.sh" | sh
     ```
     - Create a new request.
-    ![alt text](<images/create a request.png>)
+   
     - Set the request type to `POST` and enter `http://127.0.0.1:5000/users`.
-    ![alt text](<images/select post.png>)
+    
 
     - Go to the Body tab, select `raw`, and choose `JSON` from the dropdown.
     - Enter the JSON data:
