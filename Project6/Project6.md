@@ -196,7 +196,7 @@ The command above will create the project enviroment
         margin-right: 10px;
     }
     ```
-[5](img/5.png)
+![5](img/5.png)
 ### Step 3: Running the Application
 
 ## Window Users
@@ -219,7 +219,7 @@ flask run
 ```
 
 Open your browser and go to `http://127.0.0.1:5000` to see your application.
-[7](img/7.png)
+![7](img/7.png)
 
 ### Step 4: Testing the API
 
