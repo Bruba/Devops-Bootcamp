@@ -107,3 +107,55 @@ AWS offers a service called AWS Network Firewall, which can be integrated with a
 Some organizations use self-managed Squid Proxies for DNS filtering. Big organizations use enterprise solutions like Checkpoint for ingress & egress filtering.
 
 All outgoing requests first hit the proxy, get filtered, and then go out through the NAT gateway.
+
+## VPC Documentation
+One of the key things in VPC design is documentation. All VPC configurations should be documented to ensure the VPC stays compliant over time.
+
+You can choose a documentation method of your choice. It could be an Excel sheet, confluence documentation, or GitHub Markdown documentation.
+
+Now that we have a good understanding of the VPC requirements for our project, let’s document the required subnets and CIDRs.
+
+VPC Details
+Following are the VPC details, region, and availability zones we will be using for our project.
+
+1. CIDR Block: 10.0.0.0/16
+2. Region: us-west-2
+3. Availability Zones: us-west-2a, us-west-2b, us-west-2c
+4. Subnets: 15 Subnets (One per availability Zone)
+![20](img/20.png)
+
+### STEP 1: Create VPC
+
+Let's create a VPC for our project and assign attach an internet gateway to it
+
+- Login to your AWS management console and search VPC
+![1](img/1.png)
+![2](img/2.png)
+![3](img/3.png)
+
+### STEP 2: Create an Internet Gateway and attch to the VPC
+![4](img/4.png)
+![5](img/5.png)
+![6](img/6.png)
+![7](img/7.png)
+![8](img/8.png)
+
+We will follow the following subnet naming schemes
+```
+EnvName-AppType-RouteType-AZ
+```
+For example,
+```
+Prod-Web-Public-2a
+```
+### Step 3: Create a Subnet
+Let's create some subnet
+- Public Subnets
+
+| Subnet Name          | Availability Zone | CIDR Block  | Type   |
+|----------------------|-------------------|-------------|--------|
+| Prod-Web-Public-2a   | us-west-2a        | 10.0.0.0/28  | Public |
+| Prod-Web-Public-2b   | us-west-2b        | 10.0.0.16/28 | Public |
+| Prod-Web-Public-2c   | us-west-2c        | 10.0.0.32/28 | Public |
+
+Using the above table data, we will create the public subnet
