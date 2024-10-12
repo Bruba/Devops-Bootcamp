@@ -159,3 +159,82 @@ Let's create some subnet
 | Prod-Web-Public-2c   | us-west-2c        | 10.0.0.32/28 | Public |
 
 Using the above table data, we will create the public subnet
+![10](img/10.png)
+![11](img/11.png)
+Using the above steps,  create the other subnets with the data below 
+
+- Application Subnets
+
+| Subnet Name          | Availability Zone | CIDR Block  | Type    |
+|----------------------|-------------------|-------------|---------|
+| Prod-App-Private-2a  | us-west-2a        | 10.0.0.48/28 | Private |
+| Prod-App-Private-2b  | us-west-2b        | 10.0.0.64/28 | Private |
+| Prod-App-Private-2c  | us-west-2c        | 10.0.0.80/28 | Private |
+
+- Database Subnets
+
+| Subnet Name         | Availability Zone | CIDR Block  | Type    |
+|---------------------|-------------------|-------------|---------|
+| Prod-DB-Private-2a  | us-west-2a        | 10.0.0.96/28 | Private |
+| Prod-DB-Private-2b  | us-west-2b        | 10.0.0.112/28 | Private |
+| Prod-DB-Private-2c  | us-west-2c        | 10.0.0.128/28 | Private |
+
+- Management Subnets
+
+| Subnet Name           | Availability Zone | CIDR Block   | Type    |
+|-----------------------|-------------------|--------------|---------|
+| Prod-Mgmt-Private-2a  | us-west-2a        | 10.0.0.144/28 | Private |
+| Prod-Mgmt-Private-2b  | us-west-2b        | 10.0.0.160/28 | Private |
+| Prod-Mgmt-Private-2c  | us-west-2c        | 10.0.0.176/28 | Private |
+
+- Platform Subnets
+
+| Subnet Name              | Availability Zone | CIDR Block   | Type    |
+|--------------------------|-------------------|--------------|---------|
+| Prod-Platform-Private-2a | us-west-2a        | 10.0.0.192/28 | Private |
+| Prod-Platform-Private-2b | us-west-2b        | 10.0.0.208/28 | Private |
+| Prod-Platform-Private-2c | us-west-2c        | 10.0.0.224/28 | Private |
+
+
+This is how it should look like after you create all the subnets
+![12](img/12.png)
+### Step 4: Route table Design
+For each subnet group, we will create a custom route table and assign rules required for the specific subnets.
+
+For example, all three public subnets will share the same public-subnet route table.
+
+
+| Subnet      | Destination CIDR | Target           |
+|-------------|------------------|------------------|
+| Public      | 0.0.0.0/0        | Internet Gateway |
+| App         | 0.0.0.0/0        | Nat Gateway      |
+| DB          | 0.0.0.0/0        | Nat Gateway      |
+| Management  | 0.0.0.0/0        | Nat Gateway      |
+| Platform  | 0.0.0.0/0        | Nat Gateway      |
+
+
+Using the table above we will create 5 route tables
+
+- Give it a name and select the VPC you created earlier
+![13](img/13.png)
+![14](img/14.png)
+![15](img/15.png)
+- Using the table and steps above create the other route tables and their subnet association
+- When you completly create all 5 it would look like this:
+![16](img/16.png)
+
+### Step 5: NAT Gateway
+
+A NAT gateway is a Network Address Translation (NAT) service. You can use a NAT gateway so that instances in a private subnet can connect to services outside your VPC but external services cannot initiate a connection with those instances.
+
+We need to create a NAT gateway and attach it to all our route tables created earlier
+![17](img/17.png)
+
+- select a subnet and allocate an elastic ip
+![23](img/23.png)
+-  you will see the confirmation that NAT gateway has been created
+ ![18](img/18.png)
+
+ ![Note] Now we will add the NAT gateway to our route tables one by one:
+  ![19](img/19.png)
+  
