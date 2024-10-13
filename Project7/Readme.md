@@ -238,4 +238,47 @@ We need to create a NAT gateway and attach it to all our route tables created ea
 
  > [!Note] 
  Now we will add the NAT gateway to our route tables one by one:
-  ![19](img/19.png)
+ ![19](img/19.png)
+
+# AWS VPC Topology
+The following diagram shows the high-level VPC topology for our design.
+
+Note: Both the internet Gateway (IGW) and NAT gateway(NAT-GW) gets deployed in the public subnet.
+
+To check our VPC topology:
+
+
+### Step 6: Network ACLs
+
+Network access control list (NACL) is the native VPC functionality to control the inbound and outbound traffic at the subnet level.
+
+In our architecture, the connection to the DB subnet should be allowed only from the App subnet and management subnet. The public subnet should not have direct access to the DB subnet.
+
+The following are the tables for inbound and outbound rules for the DB NACL.
+
+# DB NACL (Inbound Rules)
+
+| Rule Number | Type       | Protocol | Port Range | Source IP   | Allow/Deny |
+|-------------|------------|----------|------------|-------------|------------|
+| 100         | Custom TCP | TCP      | 3306       | 10.0.0.96/28 | Allow     |
+| 110         | Custom TCP | TCP      | 3306       | 10.0.0.112/28 | Allow    |
+| 120         | Custom TCP | TCP      | 3306       | 10.0.0.128/28 | Allow    |
+| *           | All Traffic| All      | All        | 0.0.0.0/0   | Deny       |
+
+
+# DB NACL (Outbound Rules)
+
+
+| Rule Number | Type       | Protocol | Port Range | Destination IP | Allow/Deny |
+|-------------|------------|----------|------------|----------------|------------|
+| 100         | Custom TCP | TCP      | 3306       | 10.0.0.192/28    | Allow    |
+| 110         | Custom TCP | TCP      | 3306       | 10.0.0.208/28    | Allow    |
+| 120         | Custom TCP | TCP      | 3306       | 10.0.0.224/28    | Allow    |
+| *           | All Traffic| All      | All        | 0.0.0.0/0        | Deny     |
+
+
+ The above table serves as a guide to how your implemetation would look like:
+ Here is a step by step on a Network ACLS:
+![24](img/24.png)
+![21](img/21.png)
+![22](img/22.png)
