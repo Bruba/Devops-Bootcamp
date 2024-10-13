@@ -246,7 +246,7 @@ The following diagram shows the high-level VPC topology for our design.
 Note: Both the internet Gateway (IGW) and NAT gateway(NAT-GW) gets deployed in the public subnet.
 
 To check our VPC topology:
-
+ ![20](img/20.png)
 
 ### Step 6: Network ACLs
 
