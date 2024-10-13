@@ -236,5 +236,6 @@ We need to create a NAT gateway and attach it to all our route tables created ea
 -  you will see the confirmation that NAT gateway has been created
  ![18](img/18.png)
 
- [!Note] Now we will add the NAT gateway to our route tables one by one:
+ > [!Note] 
+ Now we will add the NAT gateway to our route tables one by one:
   ![19](img/19.png)
