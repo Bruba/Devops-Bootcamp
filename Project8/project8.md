@@ -133,7 +133,7 @@ We are going to spin up an ec2 instance and attach the following IAM roles to it
 - AmazonVPCFullAccess
 - AmazonEC2FullAccess
 
-goto Identiy and Access Management(IAM) from your AWS console
+goto Identity and Access Management(IAM) from your AWS console
 roles, create role
 ![1](img/1.png)
 
@@ -144,7 +144,7 @@ select the permission policy you wish to add. in this case we add the
 AmazonVPCFullAccess and AmazonEC2FullAccess and click on Next
 ![3](img/3.png)
 ![4](img/4.png)
-give the role a Name and you can also confimr the permissions given to it. then click on create role
+give the role a Name and you can also confirm the permissions given to it. then click on create role
 ![5](img/5.png)
 
 ## Now create an EC2 instance, Ubuntu 22.04
