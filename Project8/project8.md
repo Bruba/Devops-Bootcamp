@@ -176,8 +176,8 @@ Note: The VPC and subnets for this demo is created based on the VPC design docum
 We will be creating the VPC with the following
 
 1. CIDR Block: 10.0.0.0/16
-2. Region: us-west-2
-3. Availability Zones: us-west-2a, us-west-2b, us-west-2c
+2. Region: us-east-1
+3. Availability Zones: us-east-1a, us-east-1b, us-east-1c
 4. Subnets: 15 Subnets (One per availability Zone)
 5. Public Sunets (3)
 6. App Subets (3)
@@ -192,6 +192,7 @@ We will be creating the VPC with the following
 ```
 git clone https://github.com/TobiOlajumoke/Terraform-VPC.git
 ```
+![13](img/13.png)
 
 - Then cd in to the terraform-vpc folder
 ```
@@ -371,7 +372,6 @@ create_cloudwatch_logs_endpoint = true
 
 - Now cd in to infra/vpc folder and execute the terraform plan to validate the configurations.
 
-
 ```
 cd infra/vpc
 ```
@@ -382,6 +382,57 @@ This command is used to change into the directory where your Terraform files for
 ```
 terraform init
 ```
+![14](img/14.png)
+
 This step is necessary to set up Terraform for the project.
 It will download any plugins (like AWS) Terraform needs and prepare your project.
 You only need to do this once when you start working with Terraform in a new directory.
+
+- Execute the plan
+
+```
+terraform plan -var-file=../../vars/dev/vpc.tfvars
+```
+The plan command shows you what changes Terraform will make to your AWS resources.
+The `-var-file` is pointing to the file that contains specific values (like network ranges) for the development environment (dev).
+After running this command, you’ll get an output showing what Terraform plans to create or modify (like the VPC, subnets, and gateways).
+
+You should see an output with all the resources that will be created by terraform.
+
+![15](img/15.png)
+
+## Step 4: Create VPC With Terraform Apply
+
+Lets create the VPC and related resources using terraform apply.
+
+```
+terraform apply -var-file=../../vars/dev/vpc.tfvars
+```
+This is where you tell Terraform to actually create the resources on AWS.
+It will use the values from the `vpc.tfvars` file and make the necessary changes.
+You’ll see a summary of the changes before proceeding, and you have to confirm (by typing `yes`) to allow Terraform to create the VPC, subnets, internet gateways, etc. you will get a prompt that apply is complete
+
+![17](img/17.png)
+
+## Step 5: Validate VPC
+Head over to the AWS Console the check the Resource Map of the VPC.
+
+Click on the created VPC and scroll down to view the Resource Map.
+
+You should see 15 subnets , 6 route tables, internet gateway and NAT gateway as shown below.
+
+![18](img/18.png)
+
+## Step 6: Cleanup the Resources
+
+- clean up the resources created by Terraform, execute the following command
+```
+terraform destroy  -var-file=../../vars/dev/vpc.tfvars
+```
+you will get a message *destroy complete*
+
+![20](img/20.png)
+
+-  terminate the instance  created 
+
+# END
