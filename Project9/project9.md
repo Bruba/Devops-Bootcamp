@@ -1,3 +1,5 @@
+![alt text] (<images/VMware Partners With Docker, Pivotal And Google To Bring Container Support To Its Platform _ TechCrunch.jpeg>)
+
 # The Story of Life Before Docker
 
 Before Docker, deploying applications was cumbersome and often frustrating. Developers faced challenges when transitioning from development to production environments due to inconsistent configurations. Let's imagine a scenario:
@@ -51,6 +53,7 @@ Docker uses a **client-server** architecture:
 - Spin up an Ubuntu 24.04 t2.micro this is where we'll be doing the project in
 
 - SSH into the instance 
+![2](img/2.png)
 
 ### Step 2 - Install and start docker
 
@@ -79,6 +82,11 @@ For **Ubuntu**:
    ```
 
 5. ctrl + c to exit the running docker
+![3](img/3.png)
+![4](img/4.png)
+![5](img/5.png)
+![6](img/6.png)
+
 
 ### Steps 3. Clone the Docker Project
 
@@ -100,6 +108,8 @@ Once Docker is installed and set up, clone the project repository.
 ```bash
 cat dockerfile
 ```
+![7](img/7.png)
+
 Let’s break down the `Dockerfile` step by step:
 
 ### 1. **ARG PYTHON_VERSION=3.11.6**
@@ -154,6 +164,7 @@ Let’s break down the `Dockerfile` step by step:
 - **Explanation**: This is the command that runs when the container starts. It launches your Python web application using Gunicorn, which is a WSGI server for Python web apps.
   - `--bind 0.0.0.0:8000`: Tells Gunicorn to bind the app to all network interfaces on port 8000, making it accessible.
   - `hello:app`: This specifies the Python module (`hello`) and the WSGI application instance (`app`) to run. It assumes your Python application file is named `hello.py` and it contains a variable `app` that represents your Flask application.
+
 ### Step 4. **Run the Docker Application**
 
 1. **Build the Docker Image**:
@@ -161,16 +172,17 @@ Let’s break down the `Dockerfile` step by step:
    ```bash
    sudo docker build -t flask-application:1.0.0 .
    ```
-
+![8](img/8.png)
 - Check if the image built
 
 ```bash
 sudo docker images
 ```
+![9](img/9.png)
 
 2.  **Run the Docker Container**:
    ```bash
-docker run -d -p 8000:8000 flask-application:1.0.0
+sudo docker run -d -p 8000:8000 flask-application:1.0.0
    ```
 
 Check if the container is running if it is PROCEED to 3
@@ -178,7 +190,8 @@ Check if the container is running if it is PROCEED to 3
 ```bash
 sudo docker ps
 ```
-![alt text](<images/docker run and ps.png>) 
+![10](img/10.png)
+
 # if the container isn't running check the list of all containers
 
 ```bash
@@ -189,3 +202,100 @@ To troubleshoot or find out why the container "exited" and isn't running you'll 
 
 ```bash
 sudo docker logs <container_id_or_name>
+
+```
+
+3.  Test in Browser
+Now, go to your browser and access your EC2 public IP to check if the app is running properly:
+
+```bash
+http://<your-ec2-public-ip>:8000
+```
+![11](img/11.png)
+
+4. The webpage will not work, WHY?
+
+because we have not added the port 8000 to our security group of our instance so do that and try accessing  the EC2 public IP.
+![12](img/12.png)
+
+when the inbound rules have been edited, check your URL on the browser again
+![13](img/13.png)
+
+You have successfully deployed the Dockerized Flask app on an AWS EC2 instance. This is a common workflow in modern cloud infrastructure where applications are containerized for ease of deployment, scalability, and management.
+
+# Let's push the image to docker hub
+
+---
+
+### Pushing Docker Images to Docker Hub
+
+After successfully building and running your Docker image, you may want to share it with others or deploy it to different environments. Docker Hub is a cloud-based registry service that allows you to store and distribute Docker images.
+
+#### **Step 1: Create a Docker Hub Account**
+
+1. Go to [Docker Hub](https://hub.docker.com/).
+2. Sign up for a free account if you don’t have one already.
+![14](img/14.png)
+3. create a repo
+![15](img/15.png)
+![16](img/16.png)
+
+#### **Step 2: Log In to Docker Hub from Your Terminal**
+
+Use the Docker CLI to log in to your Docker Hub account:
+
+```bash
+sudo docker login
+```
+![17](img/17.png)
+
+You will be prompted to enter your Docker Hub username and password.
+
+#### **Step 3: Tag Your Image**
+
+Before pushing the image, you need to tag it with your Docker Hub username and a repository name. The tagging format is:
+
+```
+<your-dockerhub-username>/<repository-name>:<tag>
+```
+
+For example:
+
+```bash
+sudo docker tag flask-application:1.0.0 yourusername/flask-application:1.0.0
+```
+
+**Why Do We Tag Docker Images?**
+- **Version Control**: Tagging helps you manage different versions of your images. By using tags, you can easily identify specific versions of your application, which is crucial for testing and deployment.
+- **Clarity**: Tags provide clarity about what an image contains. For example, a tag can indicate whether the image is a stable release, a beta version, or a development build.
+- **Rollback**: If an issue arises with a new version, you can quickly revert to a previous, stable version using its tag.
+
+
+#### **Step 4: Push the Image to Docker Hub**
+
+Once your image is tagged, you can push it to Docker Hub using the following command:
+
+```bash
+docker push yourusername/flask-application:1.0.0
+```
+![18](img/18.png)
+
+#### **Step 5: Verify the Push**
+
+After the push completes, you can verify that your image is on Docker Hub by visiting your Docker Hub profile and checking the repositories.
+![19](img/19.png)
+
+---
+
+### Why Push to Docker Hub?
+
+- **Collaboration**: Team members can easily access shared images without having to build them from scratch.
+- **Backup**: Storing images on Docker Hub acts as a backup, ensuring that you can recover or roll back to previous versions if needed.
+- **Deployment**: You can pull images directly from Docker Hub in different environments, simplifying the deployment process.
+
+---
+
+
+# Terminate your ec2 instance after
+
+## WATCH THIS [Video](https://www.youtube.com/watch?v=1ymi24PeF3M) TOO SOLIDIFY YOUR KNOWLEDGE ABOUT DOCKER 
