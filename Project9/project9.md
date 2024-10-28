@@ -1,4 +1,4 @@
-![alt text] (<images/VMware Partners With Docker, Pivotal And Google To Bring Container Support To Its Platform _ TechCrunch.jpeg>)
+![1] (<img/1.jpeg>)
 
 # The Story of Life Before Docker
 
