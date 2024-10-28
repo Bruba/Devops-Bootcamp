@@ -1,4 +1,4 @@
-![1] (<img/1.jpeg>)
+![1] (img/1.jpeg)
 
 # The Story of Life Before Docker
 
